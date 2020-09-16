@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/jdxj/user/logger"
+	"github.com/jdxj/logger"
 	"github.com/jdxj/user/model"
 	user "github.com/jdxj/user/proto"
 )

@@ -1,10 +1,11 @@
 package main
 
 import (
+	"github.com/jdxj/logger"
 	"github.com/jdxj/user/config"
 	"github.com/jdxj/user/handler"
-	"github.com/jdxj/user/logger"
 	"github.com/jdxj/user/model"
+
 	"github.com/micro/micro/v3/service"
 )
 
