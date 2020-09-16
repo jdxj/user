@@ -2,47 +2,31 @@ package handler
 
 import (
 	"context"
+	"database/sql"
 
-	log "github.com/micro/micro/v3/service/logger"
-
-	user "user/proto"
+	"github.com/jdxj/user/logger"
+	"github.com/jdxj/user/model"
+	user "github.com/jdxj/user/proto"
 )
 
 type User struct{}
 
-// Call is a single request handler called via client.Call or the generated client code
-func (e *User) Call(ctx context.Context, req *user.Request, rsp *user.Response) error {
-	log.Info("Received User.Call request")
-	rsp.Msg = "Hello " + req.Name
-	return nil
-}
-
-// Stream is a server side stream handler called via client.Stream or the generated client code
-func (e *User) Stream(ctx context.Context, req *user.StreamingRequest, stream user.User_StreamStream) error {
-	log.Infof("Received User.Stream request with count: %d", req.Count)
-
-	for i := 0; i < int(req.Count); i++ {
-		log.Infof("Responding: %d", i)
-		if err := stream.Send(&user.StreamingResponse{
-			Count: int64(i),
-		}); err != nil {
-			return err
-		}
+func (u *User) Login(ctx context.Context, req *user.RequestLogin, resp *user.ResponseLogin) error {
+	userInfo, err := model.LoginCheck(req.Name, req.Password)
+	if err == nil {
+		resp.Message = "ok"
+		resp.UserId = int64(userInfo.ID)
+		return nil
 	}
 
-	return nil
-}
-
-// PingPong is a bidirectional stream handler called via client.Stream or the generated client code
-func (e *User) PingPong(ctx context.Context, stream user.User_PingPongStream) error {
-	for {
-		req, err := stream.Recv()
-		if err != nil {
-			return err
-		}
-		log.Infof("Got ping %v", req.Stroke)
-		if err := stream.Send(&user.Pong{Stroke: req.Stroke}); err != nil {
-			return err
-		}
+	if err != sql.ErrNoRows {
+		logger.Error("LoginCheck: %s", err)
+		resp.Code = 101
+		resp.Message = "internal error"
+		return nil
 	}
+
+	resp.Code = 102
+	resp.Message = "name or password error"
+	return nil
 }

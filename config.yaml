@@ -1,0 +1,10 @@
+db:
+  user: root
+  password: 123456
+  host: 127.0.0.1:3306
+  dbname: video
+
+mode: debug
+
+log:
+  path: ./user.log

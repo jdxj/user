@@ -1,14 +1,16 @@
 package main
 
 import (
-	"user/handler"
-	pb "user/proto"
+	"github.com/jdxj/user/config"
+	"github.com/jdxj/user/handler"
+	"github.com/jdxj/user/logger"
+	pb "github.com/jdxj/user/proto"
 
 	"github.com/micro/micro/v3/service"
-	"github.com/micro/micro/v3/service/logger"
 )
 
 func main() {
+	config.InitConfig("config.yaml")
 	// Create service
 	srv := service.New(
 		service.Name("user"),
@@ -20,6 +22,6 @@ func main() {
 
 	// Run service
 	if err := srv.Run(); err != nil {
-		logger.Fatal(err)
+		logger.Error("Run: %s", err)
 	}
 }
