@@ -10,7 +10,7 @@ var (
 	cfg *configuration
 )
 
-func InitConfig(path string) error {
+func Init(path string) error {
 	file, err := os.Open(path)
 	if err != nil {
 		return err

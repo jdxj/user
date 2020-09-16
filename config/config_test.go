@@ -6,7 +6,7 @@ import (
 )
 
 func TestInitConfig(t *testing.T) {
-	if err := InitConfig("../config.yaml"); err != nil {
+	if err := Init("../config.yaml"); err != nil {
 		t.Fatalf("%s\n", err)
 	}
 	dbCfg := DB()
