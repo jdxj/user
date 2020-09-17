@@ -20,7 +20,7 @@ func (u *User) Login(ctx context.Context, req *user.RequestLogin, resp *user.Res
 	}
 
 	if err != sql.ErrNoRows {
-		logger.Error("LoginCheck: %s", err)
+		logger.Errorf("LoginCheck: %s", err)
 		resp.Code = 101
 		resp.Message = "internal error"
 		return nil
